@@ -44,7 +44,7 @@ h1 {
 .gallery {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: left;
 }
 
 .gallery .card {
