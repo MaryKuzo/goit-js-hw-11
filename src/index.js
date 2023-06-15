@@ -4,7 +4,8 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
+import onScroll from './onscroll';
+import onToTopBtn from './ontotopbtn';
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -140,20 +141,8 @@ function debounce(callback, delay) {
 }
 
 
-function onScroll() {
-  const scrolled = window.pageYOffset;
-  const comply = document.documentElement.clientHeight;
-  const isScrolled = scrolled > comply;
-
-  toTopBtn.classList.toggle('btn-to-top--visible', isScrolled);
-}
 
 
-function onToTopBtn() {
-  if (window.pageYOffset > 0) {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
 
 const toTopBtn = document.querySelector('.btn-to-top');
 window.addEventListener('scroll', debounce(onScroll, 10));
