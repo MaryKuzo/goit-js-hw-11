@@ -3,7 +3,7 @@ import Notiflix from 'notiflix';
 
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
+import renderGallery from './js/render_gallery';
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -83,39 +83,8 @@ async function handleIntersection(entries) {
   }
 }
 
-function renderGallery(images) {
-  const gallery = document.querySelector('.gallery');
 
-  function generateMarkup({ id, largeImageURL, webformatURL, tags, likes, views, comments, downloads }) {
-    return `
-      <a class="gallery__link" href="${largeImageURL}">
-        <div class="gallery-item" id="${id}">
-          <img class="gallery-item__img" src="${webformatURL}" alt="${tags}" loading="lazy" />
-          <div class="info">
-            <p class="info-item"><b>Likes &nbsp;</b>${likes}</p>
-            <p class="info-item"><b>Views &nbsp;</b>${views}</p>
-            <p class="info-item"><b>Comments &nbsp;</b>${comments}</p>
-            <p class="info-item"><b>Downloads &nbsp;</b>${downloads}</p>
-          </div>
-        </div>
-      </a>
-    `;
-  }
 
-  const markup = images.reduce((acc, image) => acc + generateMarkup(image), '');
-  gallery.insertAdjacentHTML('beforeend', markup);
-
-  // Add scroll-to-top button
-  const scrollToTopBtn = document.createElement('button');
-  scrollToTopBtn.classList.add('scroll-to-top');
-  scrollToTopBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
-  scrollToTopBtn.addEventListener('click', scrollToTop);
-  document.body.appendChild(scrollToTopBtn);
-}
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
 
 function alertImagesFound(data) {
   Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
