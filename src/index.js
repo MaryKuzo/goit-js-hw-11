@@ -50,7 +50,7 @@ async function onSearchForm(e) {
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       alertImagesFound(data);
 
-      if (page*perPage>= data.totalHits) {
+      if (perPage>= data.totalHits) {
         alertEndOfSearch();
       }
 
