@@ -1,9 +1,11 @@
 import axios from 'axios';
-import Notiflix from 'notiflix';
-
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import renderGallery from './js/render_gallery';
+import {alertEndOfSearch,alertImagesFound,alertNoEmptySearch,displayNoResultsAlert} from './js/notifix'
+
+
+
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -81,24 +83,5 @@ async function handleIntersection(entries) {
       console.log(error);
     }
   }
-}
-
-
-
-
-function alertImagesFound(data) {
-  Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
-}
-
-function alertNoEmptySearch() {
-  Notiflix.Notify.failure('The search bar cannot be empty. Please type any criteria in the search bar.');
-}
-
-function displayNoResultsAlert() {
-  Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
-}
-
-function alertEndOfSearch() {
-  Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
 }
 
