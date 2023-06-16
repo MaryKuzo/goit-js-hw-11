@@ -49,9 +49,8 @@ async function onSearchForm(e) {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       alertImagesFound(data);
-      const totalPages = Math.ceil(data.totalHits / perPage);
 
-      if (page >= totalPages) {
+      if (page*perPage>= data.totalHits) {
         alertEndOfSearch();
       }
 
