@@ -4,7 +4,6 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -105,6 +104,17 @@ function renderGallery(images) {
 
   const markup = images.reduce((acc, image) => acc + generateMarkup(image), '');
   gallery.insertAdjacentHTML('beforeend', markup);
+
+  // Add scroll-to-top button
+  const scrollToTopBtn = document.createElement('button');
+  scrollToTopBtn.classList.add('scroll-to-top');
+  scrollToTopBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
+  scrollToTopBtn.addEventListener('click', scrollToTop);
+  document.body.appendChild(scrollToTopBtn);
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function alertImagesFound(data) {
@@ -116,14 +126,10 @@ function alertNoEmptySearch() {
 }
 
 function displayNoResultsAlert() {
-  Notiflix.Notify.failure(
-    'Sorry, there are no images matching your search query. Please try again.',
-  );
+  Notiflix.Notify.failure('Sorry, there are no images matching your search query. Please try again.');
 }
 
 function alertEndOfSearch() {
   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
 }
-
-
 
