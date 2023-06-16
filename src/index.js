@@ -57,12 +57,7 @@ async function onSearchForm(e) {
 
       }
 
-        if (perPage >= data.totalHits) {
-          alertEndOfSearch();
-          observer.unobserve(scrollTarget);
 
-
-        }
     }
   } catch (error) {
     console.log(error);
@@ -80,6 +75,12 @@ async function handleIntersection(entries) {
       const { data } = await fetchImages(query, page, perPage);
       renderGallery(data.hits);
       simpleLightBox.refresh();
+        if (perPage * page >= data.totalHits && data.totalHits !== 0) {
+          alertEndOfSearch();
+          observer.unobserve(scrollTarget);
+
+
+        }
     } catch (error) {
       console.log(error);
     }
