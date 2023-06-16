@@ -21,7 +21,7 @@ const gallery = document.querySelector('.gallery');
 let query = '';
 let page = 1;
 let simpleLightBox;
-const perPage = 21;
+const perPage = 40;
 
 searchForm.addEventListener('submit', onSearchForm);
 
@@ -49,11 +49,18 @@ async function onSearchForm(e) {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       alertImagesFound(data);
+      const totalPages = Math.ceil(data.totalHits / perPage);
+
+      if (page >= totalPages) {
+        alertEndOfSearch();
+      }
+
 
       if (data.totalHits > perPage) {
         scrollTarget = document.querySelector('#scroll-target');
         observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
         observer.observe(scrollTarget);
+
       }
     }
   } catch (error) {
@@ -73,12 +80,7 @@ async function handleIntersection(entries) {
       renderGallery(data.hits);
       simpleLightBox.refresh();
 
-      const totalPages = Math.ceil(data.totalHits / perPage);
 
-      if (page >= totalPages) {
-        observer.unobserve(scrollTarget);
-        alertEndOfSearch();
-      }
     } catch (error) {
       console.log(error);
     }

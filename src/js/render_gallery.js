@@ -26,4 +26,5 @@ export default function renderGallery(images) {
   scrollToTopBtn.innerHTML = '<i class="fa fa-arrow-up"></i>';
   scrollToTopBtn.addEventListener('click', scrollToTop);
   document.body.appendChild(scrollToTopBtn);
+
 }
