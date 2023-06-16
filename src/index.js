@@ -108,6 +108,7 @@ async function onLoadMoreBtn() {
   } catch (error) {
     console.log(error);
   }
+
 }
 
 function alertImagesFound(data) {
@@ -131,6 +132,7 @@ function alertEndOfSearch() {
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 
 
 

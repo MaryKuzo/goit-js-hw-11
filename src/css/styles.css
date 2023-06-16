@@ -15,7 +15,6 @@ h1 {
   margin-bottom: 30px;
 }
 
-/* Стили для формы поиска */
 .search-form {
   text-align: center;
   margin-bottom: 30px;
@@ -40,7 +39,6 @@ h1 {
   cursor: pointer;
 }
 
-/* Стили для галереи картинок */
 .gallery {
   display: flex;
   flex-wrap: wrap;
