@@ -4,7 +4,7 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import { onScroll, onToTopBtn }from './js/on_scroll';
+// import { onScroll, onToTopBtn }from './js/on_scroll';
 
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
