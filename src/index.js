@@ -4,7 +4,6 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// import { onScroll, onToTopBtn }from './js/on_scroll';
 
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
@@ -15,21 +14,18 @@ async function fetchImages(query, page, perPage) {
   const response = await axios.get(url);
   return response;
 }
+
 const searchForm = document.querySelector('#search-form');
 const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.load-more');
 let query = '';
 let page = 1;
 let simpleLightBox;
 const perPage = 21;
 
 searchForm.addEventListener('submit', onSearchForm);
-loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
-onScroll();
-onToTopBtn();
-
-
+let scrollTarget;
+let observer;
 
 async function onSearchForm(e) {
   e.preventDefault();
@@ -37,7 +33,6 @@ async function onSearchForm(e) {
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
   gallery.innerHTML = '';
-  loadMoreBtn.classList.add('is-hidden');
 
   if (query === '') {
     alertNoEmptySearch();
@@ -55,7 +50,9 @@ async function onSearchForm(e) {
       alertImagesFound(data);
 
       if (data.totalHits > perPage) {
-        loadMoreBtn.classList.remove('is-hidden');
+        scrollTarget = document.querySelector('#scroll-target');
+        observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
+        observer.observe(scrollTarget);
       }
     }
   } catch (error) {
@@ -64,6 +61,29 @@ async function onSearchForm(e) {
     searchForm.reset();
   }
 }
+
+async function handleIntersection(entries) {
+  const entry = entries[0];
+  if (entry.isIntersecting) {
+    page += 1;
+
+    try {
+      const { data } = await fetchImages(query, page, perPage);
+      renderGallery(data.hits);
+      simpleLightBox.refresh();
+
+      const totalPages = Math.ceil(data.totalHits / perPage);
+
+      if (page >= totalPages) {
+        observer.unobserve(scrollTarget);
+        alertEndOfSearch();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+
 function renderGallery(images) {
   const gallery = document.querySelector('.gallery');
 
@@ -87,30 +107,6 @@ function renderGallery(images) {
   gallery.insertAdjacentHTML('beforeend', markup);
 }
 
-
-async function onLoadMoreBtn() {
-  page += 1;
-  simpleLightBox.destroy();
-
-  try {
-    const { data } = await fetchImages(query, page, perPage);
-
-    renderGallery(data.hits);
-    simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-
-    const totalPages = Math.ceil(data.totalHits / perPage);
-
-    if (page >= totalPages) {
-      loadMoreBtn.classList.add('is-hidden');
-      await delay(500);
-      alertEndOfSearch();
-    }
-  } catch (error) {
-    console.log(error);
-  }
-
-}
-
 function alertImagesFound(data) {
   Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`);
 }
@@ -128,12 +124,6 @@ function displayNoResultsAlert() {
 function alertEndOfSearch() {
   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
 }
-
-function delay(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-
 
 
 
