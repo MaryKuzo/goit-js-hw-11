@@ -4,8 +4,8 @@ import Notiflix from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import onScroll from './on_scroll';
-import onToTopBtn from './on_to_top_btn';
+import { onScroll, onToTopBtn }from './js/on_scroll';
+
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -28,6 +28,8 @@ loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
 onScroll();
 onToTopBtn();
+
+
 
 async function onSearchForm(e) {
   e.preventDefault();
@@ -130,20 +132,6 @@ function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function debounce(callback, delay) {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-      callback.apply(null, args);
-    }, delay);
-  };
-}
 
 
 
-
-
-const toTopBtn = document.querySelector('.btn-to-top');
-window.addEventListener('scroll', debounce(onScroll, 10));
-toTopBtn.addEventListener('click', onToTopBtn);
