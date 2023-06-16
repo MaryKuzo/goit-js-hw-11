@@ -5,7 +5,6 @@ import renderGallery from './js/render_gallery';
 import {alertEndOfSearch,alertImagesFound,alertNoEmptySearch,displayNoResultsAlert} from './js/notifix'
 
 
-
 const API_KEY = '37259040-666f8102f8645398c01db5082';
 
 axios.defaults.baseURL = 'https://pixabay.com/api/';
@@ -50,17 +49,20 @@ async function onSearchForm(e) {
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
       alertImagesFound(data);
 
-      if (perPage>= data.totalHits) {
-        alertEndOfSearch();
-      }
-
-
-      if (data.totalHits > perPage) {
+      if (data.totalHits >= perPage) {
         scrollTarget = document.querySelector('#scroll-target');
         observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
         observer.observe(scrollTarget);
 
+
       }
+
+        if (perPage >= data.totalHits) {
+          alertEndOfSearch();
+          observer.unobserve(scrollTarget);
+
+
+        }
     }
   } catch (error) {
     console.log(error);
@@ -78,11 +80,8 @@ async function handleIntersection(entries) {
       const { data } = await fetchImages(query, page, perPage);
       renderGallery(data.hits);
       simpleLightBox.refresh();
-
-
     } catch (error) {
       console.log(error);
     }
   }
 }
-
