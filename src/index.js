@@ -21,6 +21,7 @@ let simpleLightBox;
 const perPage = 40;
 let scrollTarget;
 let observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
+let isFetching = false;
 
 refs.searchForm.addEventListener('submit', onSearchForm);
 
@@ -67,7 +68,7 @@ async function onSearchForm(e) {
 
 async function handleIntersection(entries) {
   const entry = entries[0];
-  if (entry.isIntersecting && !isFetching) { 
+  if (entry.isIntersecting && !isFetching) {
     page += 1;
     isFetching = true;
 
