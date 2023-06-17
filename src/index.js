@@ -20,11 +20,9 @@ let page = 1;
 let simpleLightBox;
 const perPage = 40;
 let scrollTarget;
-let observer;
-
+let observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
 
 refs.searchForm.addEventListener('submit', onSearchForm);
-
 
 async function onSearchForm(e) {
   e.preventDefault();
@@ -42,6 +40,7 @@ async function onSearchForm(e) {
     const { data } = await fetchImages(query, page, perPage);
 
     if (data.totalHits === 0) {
+      // observer.unobserve(scrollTarget);
       displayNoResultsAlert();
     } else {
       renderGallery(data.hits);
@@ -50,13 +49,13 @@ async function onSearchForm(e) {
 
       if (data.totalHits >= perPage) {
         scrollTarget = document.querySelector('#scroll-target');
-        observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
+
+        if (!observer) {
+          observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
+        }
+
         observer.observe(scrollTarget);
-
-
       }
-
-
     }
   } catch (error) {
     console.log(error);
@@ -74,13 +73,12 @@ async function handleIntersection(entries) {
       const { data } = await fetchImages(query, page, perPage);
       renderGallery(data.hits);
       simpleLightBox.refresh();
-        if (perPage*page >= data.totalHits && data.totalHits !== 0) {
-          alertEndOfSearch();
-          observer.unobserve(scrollTarget);
-          return
-
-
-        }
+      if (perPage * page >= data.totalHits && data.totalHits !== 0) {
+        alertEndOfSearch();
+        observer.unobserve(scrollTarget);
+        observer = null;
+        return;
+      }
     } catch (error) {
       console.log(error);
     }
