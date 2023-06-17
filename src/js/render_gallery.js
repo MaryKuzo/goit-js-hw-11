@@ -1,6 +1,6 @@
 import scrollToTop from "./scroll";
+import { refs } from "./refs";
 export default function renderGallery(images) {
-  const gallery = document.querySelector('.gallery');
 
   function generateMarkup({ id, largeImageURL, webformatURL, tags, likes, views, comments, downloads }) {
     return `
@@ -19,7 +19,7 @@ export default function renderGallery(images) {
   }
 
   const markup = images.reduce((acc, image) => acc + generateMarkup(image), '');
-  gallery.insertAdjacentHTML('beforeend', markup);
+  refs.gallery.insertAdjacentHTML('beforeend', markup);
 
   const scrollToTopBtn = document.createElement('button');
   scrollToTopBtn.classList.add('scroll-to-top');
