@@ -21,7 +21,6 @@ let simpleLightBox;
 const perPage = 40;
 let scrollTarget;
 let observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
-let isFetching = false;
 
 refs.searchForm.addEventListener('submit', onSearchForm);
 
@@ -68,9 +67,8 @@ async function onSearchForm(e) {
 
 async function handleIntersection(entries) {
   const entry = entries[0];
-  if (entry.isIntersecting && !isFetching) {
+  if (entry.isIntersecting) {
     page += 1;
-    isFetching = true;
 
     try {
       const { data } = await fetchImages(query, page, perPage);
@@ -79,13 +77,11 @@ async function handleIntersection(entries) {
       if (perPage * page >= data.totalHits && data.totalHits !== 0) {
         alertEndOfSearch();
         observer.unobserve(scrollTarget);
-        isFetching = false;
+        // observer = null;
         return;
       }
     } catch (error) {
       console.log(error);
-    } finally {
-      isFetching = false;
     }
   }
 }
