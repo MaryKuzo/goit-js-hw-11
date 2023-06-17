@@ -40,8 +40,9 @@ async function onSearchForm(e) {
     const { data } = await fetchImages(query, page, perPage);
 
     if (data.totalHits === 0) {
-      // observer.unobserve(scrollTarget);
+
       displayNoResultsAlert();
+      observer.unobserve(scrollTarget);
     } else {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
@@ -66,8 +67,9 @@ async function onSearchForm(e) {
 
 async function handleIntersection(entries) {
   const entry = entries[0];
-  if (entry.isIntersecting) {
+  if (entry.isIntersecting && !isFetching) { 
     page += 1;
+    isFetching = true;
 
     try {
       const { data } = await fetchImages(query, page, perPage);
@@ -76,11 +78,13 @@ async function handleIntersection(entries) {
       if (perPage * page >= data.totalHits && data.totalHits !== 0) {
         alertEndOfSearch();
         observer.unobserve(scrollTarget);
-        observer = null;
+        isFetching = false;
         return;
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      isFetching = false;
     }
   }
 }
