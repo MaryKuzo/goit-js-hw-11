@@ -40,23 +40,24 @@ async function onSearchForm(e) {
     const { data } = await fetchImages(query, page, perPage);
 
     if (data.totalHits === 0) {
-
       displayNoResultsAlert();
       observer.unobserve(scrollTarget);
     } else {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
+      observer.unobserve(scrollTarget);
       alertImagesFound(data);
 
       if (data.totalHits >= perPage) {
         scrollTarget = document.querySelector('#scroll-target');
-        observer.unobserve(scrollTarget);
+        observer.observe(scrollTarget);
       }
     }
   } catch (error) {
     console.log(error);
   } finally {
     refs.searchForm.reset();
+
   }
 }
 
@@ -68,6 +69,7 @@ async function handleIntersection(entries) {
     try {
       const { data } = await fetchImages(query, page, perPage);
       renderGallery(data.hits);
+
       simpleLightBox.refresh();
       if (perPage * page >= data.totalHits && data.totalHits !== 0) {
         alertEndOfSearch();
@@ -75,6 +77,7 @@ async function handleIntersection(entries) {
         // observer = null;
         return;
       }
+
     } catch (error) {
       console.log(error);
     }
