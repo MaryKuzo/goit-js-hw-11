@@ -80,6 +80,7 @@ async function handleIntersection(entries) {
         // observer = null;
         return;
       }
+      observer.unobserve(scrollTarget);
     } catch (error) {
       console.log(error);
     }
