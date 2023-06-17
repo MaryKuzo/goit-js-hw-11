@@ -30,6 +30,7 @@ async function onSearchForm(e) {
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
   refs.gallery.innerHTML = '';
+  observer.disconnect()
 
   if (query === '') {
     alertNoEmptySearch();
@@ -45,7 +46,7 @@ async function onSearchForm(e) {
     } else {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
-      observer.unobserve(scrollTarget);
+
       alertImagesFound(data);
 
       if (data.totalHits >= perPage) {
@@ -74,7 +75,7 @@ async function handleIntersection(entries) {
       if (perPage * page >= data.totalHits && data.totalHits !== 0) {
         alertEndOfSearch();
         observer.unobserve(scrollTarget);
-        // observer = null;
+        observer = null; // Вимкнення спостереження
         return;
       }
 
@@ -83,3 +84,4 @@ async function handleIntersection(entries) {
     }
   }
 }
+
