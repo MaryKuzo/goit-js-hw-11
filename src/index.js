@@ -42,7 +42,7 @@ async function onSearchForm(e) {
 
     if (data.totalHits === 0) {
       displayNoResultsAlert();
-      observer.unobserve(scrollTarget);
+     
     } else {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
