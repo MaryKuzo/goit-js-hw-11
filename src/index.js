@@ -30,7 +30,9 @@ async function onSearchForm(e) {
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
   refs.gallery.innerHTML = '';
-  observer.disconnect()
+  observer.disconnect(scrollTarget);
+
+
 
   if (query === '') {
     alertNoEmptySearch();
@@ -42,7 +44,7 @@ async function onSearchForm(e) {
 
     if (data.totalHits === 0) {
       displayNoResultsAlert();
-     
+
     } else {
       renderGallery(data.hits);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
