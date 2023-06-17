@@ -50,7 +50,7 @@ async function onSearchForm(e) {
 
       if (data.totalHits >= perPage) {
         scrollTarget = document.querySelector('#scroll-target');
-        observer.observe(scrollTarget);
+        observer.unobserve(scrollTarget);
       }
     }
   } catch (error) {
