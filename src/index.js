@@ -50,11 +50,6 @@ async function onSearchForm(e) {
 
       if (data.totalHits >= perPage) {
         scrollTarget = document.querySelector('#scroll-target');
-
-        if (!observer) {
-          observer = new IntersectionObserver(handleIntersection, { threshold: 0 });
-        }
-
         observer.observe(scrollTarget);
       }
     }
@@ -80,7 +75,6 @@ async function handleIntersection(entries) {
         // observer = null;
         return;
       }
-      observer.unobserve(scrollTarget);
     } catch (error) {
       console.log(error);
     }
