@@ -44,9 +44,11 @@ async function onSearchForm(e) {
 
     if (data.totalHits === 0) {
       displayNoResultsAlert();
+      observer.disconnect(scrollTarget);
 
     } else {
       renderGallery(data.hits);
+      observer.disconnect(scrollTarget);
       simpleLightBox = new SimpleLightbox('.gallery a').refresh();
 
       alertImagesFound(data);
@@ -77,7 +79,7 @@ async function handleIntersection(entries) {
       if (perPage * page >= data.totalHits && data.totalHits !== 0) {
         alertEndOfSearch();
         observer.unobserve(scrollTarget);
-        observer = null; // Вимкнення спостереження
+        
         return;
       }
 
