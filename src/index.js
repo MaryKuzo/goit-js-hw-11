@@ -74,7 +74,7 @@ async function handleIntersection(entries) {
       const { data } = await fetchImages(query, page, perPage);
       renderGallery(data.hits);
       simpleLightBox.refresh();
-        if (perPage * page >= data.totalHits && data.totalHits !== 0) {
+        if (perPage*page >= data.totalHits && data.totalHits !== 0) {
           alertEndOfSearch();
           observer.unobserve(scrollTarget);
           return
